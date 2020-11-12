@@ -1,0 +1,41 @@
+.searchBar {
+  padding-top: 30px;
+  display: flex;
+
+  &__input {
+    width: 500px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 20px;
+    border: 2.5px solid blueviolet;
+    border-radius: 10px;
+    outline: none;
+
+    &::placeholder {
+      font-style: italic;
+    }
+
+    &:focus {
+      box-shadow: 0 0 10px 2px blueviolet;
+    }
+  }
+
+  &__button {
+    margin-left: 5px;
+    background-color: blueviolet;
+    background-image: url('../images/search-3-32.ico');
+    color: white;
+    background-size: contain;
+    background-position: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    border: 5px solid blueviolet;
+
+    &:hover {
+      cursor: pointer;
+      box-shadow: 0 0 10px 2px blueviolet;
+      outline: none;
+    }
+  }
+}
