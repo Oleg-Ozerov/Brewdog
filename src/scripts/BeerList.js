@@ -11,6 +11,7 @@ export class BeerList {
     beerList;
     recentSearches = [];
     filtredBeers;
+    loadMoreButton;
 
     constructor() {
         this.parentElement = document.querySelector('.body');
@@ -116,8 +117,10 @@ export class BeerList {
     }
 
     async createBeerList () {
-        this.beerList = document.createElement('section');
         const allBeers = await getBeers();
+        let counter = 0;
+
+        this.beerList = document.createElement('section');
         this.filtredBeers = allBeers.filter(beer => beer.name.toLowerCase().includes(this.inputValue.toLocaleLowerCase()));
 
         if (this.filtredBeers.length === 0 ) {
@@ -130,14 +133,36 @@ export class BeerList {
 
         this.beerList.classList.add('beerList');
         this.container.appendChild(this.beerList);
+        this.firstBeerListRender();
+
+
+    }
+
+    firstBeerListRender () {
+        this.filtredBeers.slice(0, 5).forEach((beer) => {
+            const newCard = new Beer(beer['image_url'], beer.name, beer.description);
+
+            this.beerList.appendChild(newCard.createBeerCard());
+        })
+        this.createLoadMoreButton();
+        this.createScrollButton();
+        this.beerList.firstChild.setAttribute('id', 'forScroll');
+        this.scrollToFirstCard();
+    }
+
+    loadMoreItems () {
+        while (this.beerList.hasChildNodes()) {
+            this.beerList.removeChild(this.beerList.firstChild);
+        }
 
         this.filtredBeers.forEach((beer) => {
             const newCard = new Beer(beer['image_url'], beer.name, beer.description);
+
             this.beerList.appendChild(newCard.createBeerCard());
         })
-
         this.beerList.firstChild.setAttribute('id', 'forScroll');
-        this.scrollToFirstCard();
+
+        this.createScrollButton();
     }
 
     addError (el) {
@@ -157,6 +182,42 @@ export class BeerList {
 
             oldList.parentNode.removeChild(oldList);
         }
+    }
+
+    createLoadMoreButton () {
+        this.loadMoreButton = document.createElement('button');
+
+        this.loadMoreButton.innerText = 'Load more';
+        this.loadMoreButton.classList.add('beerList__button');
+        this.addButtonListener(this.loadMoreButton);
+        this.beerList.appendChild(this.loadMoreButton);
+    }
+
+    addButtonListener (element) {
+        element.addEventListener('click', () => {
+            element.style.display = 'none';
+            this.filtredBeers.length < 6 ? this.noMoreItemsMessege() : this.loadMoreItems();
+        })
+    }
+
+    createScrollButton () {
+        const scrollButton = document.createElement('div');
+
+        scrollButton.innerText = '🠕';
+        scrollButton.classList.add('beerList__scrollButton');
+        scrollButton.addEventListener('click', () => {
+            this.scrollToFirstCard();
+        })
+
+        this.beerList.appendChild(scrollButton);
+    }
+
+    noMoreItemsMessege () {
+        const warningMessege = document.createElement('div');
+
+        warningMessege.classList.add('beerList__warning')
+        warningMessege.innerText = 'There were no properties found for the given beer.';
+        this.beerList.appendChild(warningMessege);
     }
 
     initialRender () {

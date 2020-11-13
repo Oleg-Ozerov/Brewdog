@@ -32,4 +32,48 @@
     }
   }
 
+  &__button {
+    cursor: pointer;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    height: 40px;
+    width: 100px;
+    align-self: center;
+    background-color: white;
+    border-radius: 10px;
+    outline: none;
+
+    &:hover {
+      box-shadow: 0 0 10px 2px blueviolet;
+    }
+  }
+
+  &__warning {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    width: 560px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 40px;
+  }
+
+  &__scrollButton {
+    position: fixed;
+    left: 100px;
+    bottom: 50px;
+    width: 40px;
+    height: 40px;
+    background-color: blueviolet;
+    text-align: center;
+    line-height: 40px;
+    font-size: 30px;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 0 0 10px 2px blueviolet;
+    }
+  }
 }
