@@ -1,0 +1,35 @@
+.beerList {
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+
+  &__card {
+    width: 560px;
+    height: 300px;
+    display: flex;
+    margin-top: 10px;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: space-around;
+
+    &-photo {
+      height: 200px;
+    }
+
+    &-content {
+      width: 60%;
+      height: 200px;
+    }
+
+    &-title {
+      font-weight: bold;
+      align-self: start;
+    }
+
+    &-description {
+      padding-top: 10px;
+    }
+  }
+
+}

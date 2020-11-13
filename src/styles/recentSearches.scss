@@ -1,15 +1,9 @@
 .recentSearches {
   margin-top: 20px;
 
-  &__title {
-    color: blueviolet;
-    font-weight: bold;
-  }
-
   &__list {
     margin-top: 10px;
-    height: 20px;
-    border: 2.5px solid blueviolet;
+    border: 1px solid grey;
     border-radius: 10px;
     width: 560px;
   }

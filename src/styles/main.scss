@@ -3,7 +3,12 @@
 @import "container";
 @import "searchBar";
 @import "recentSearches";
+@import "beerList";
 
 .body {
   font-family: Helvetica, Arial, sans-serif;
+}
+
+.wrongInput {
+  border: 2px solid red
 }
