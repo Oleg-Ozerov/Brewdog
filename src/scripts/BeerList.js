@@ -101,7 +101,13 @@ export class BeerList {
         this.recentSearches.forEach(el => {
             const newItem = document.createElement('li');
 
+            newItem.classList.add('recentSearches__list-item');
             newItem.innerText = el;
+            newItem.addEventListener('click', () => {
+                this.inputValue = el;
+                this.inputElement.value = el;
+            })
+            this.addSearchButtonListeners(newItem);
             searchList.appendChild(newItem);
         })
         searchList.classList.add('recentSearches__list');
