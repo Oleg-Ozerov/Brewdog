@@ -5,7 +5,7 @@ import {
     ENTER_KEY,
     INPUT_FILTER_REG,
     RECENT_SEARCHES,
-    RED_COLOR,
+    RED_COLOR, REMOVE_BUTTON_VALUE,
     WRONG_INPUT_VALUE
 } from "./constanses.js";
 import {BeerModal} from "./BeerModal.js";
@@ -144,6 +144,7 @@ export class BeerList {
             this.addError(this.beerList);
         } else {
             this.recentSearches = [this.inputValue, ...this.recentSearches];
+            localStorage.setItem('recentSearches', JSON.stringify(this.recentSearches));
             this.removeRecentSearchesBlock();
             this.createRecentSearchesBlock();
         }
@@ -161,13 +162,17 @@ export class BeerList {
     addListenersOnCard(newCard) {
         const button = document.querySelector(`#button${newCard.id}`);
 
+        if (window.favourites.find(item => item.id === newCard.id)) {
+            button.innerText = REMOVE_BUTTON_VALUE;
+            button.style.backgroundColor = RED_COLOR;
+        }
+
         newCard.addButtonListener(button);
 
         const cardTitle = document.querySelector(`#title${newCard.id}`);
 
         cardTitle.addEventListener('click',async () => {
             await this.createSingleBearModal(newCard, button);
-
         })
     }
 
@@ -180,10 +185,7 @@ export class BeerList {
         const modalButton = markup.querySelector(`#button${newCard.id}`);
 
         modalButton.innerText = button.innerText;
-        modalButton.style.backgroundColor !== RED_COLOR
-            ? modalButton.style.backgroundColor = BLUEVIOLET_COLOR
-            : modalButton.style.backgroundColor = RED_COLOR;
-
+        modalButton.style.backgroundColor = button.style.backgroundColor;
         singleBeerModal.card.addButtonListener(modalButton);
 
         modalButton.addEventListener('click', () => {

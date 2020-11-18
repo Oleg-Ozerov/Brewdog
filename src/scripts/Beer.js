@@ -2,8 +2,6 @@ import {changeFavouritesList} from "./main.js";
 import {ADD_BUTTON_VALUE, BLUEVIOLET_COLOR, RED_COLOR, REMOVE_BUTTON_VALUE} from "./constanses.js";
 
 export class Beer {
-    buttonToggler = ADD_BUTTON_VALUE;
-
     constructor(beer) {
         this.id = beer.id;
         this.photo = beer.photo;
@@ -15,7 +13,7 @@ export class Beer {
         const beerCard = document.createElement('div');
 
         beerCard.classList.add('beerList__card')
-        beerCard.innerHTML = `<img class="beerList__card-photo" src="${this.photo}">
+        beerCard.innerHTML = `<img alt="beer" class="beerList__card-photo" src="${this.photo}">
                               <div class="beerList__card-content">
                                 <p class="beerList__card-title" id="title${this.id}">${this.title}</p>
                                 <p class="beerList__card-description">${this.description.slice(0, 300)}...</p>
@@ -40,6 +38,7 @@ export class Beer {
             beer.id === this.id;
         })) {
             window.favourites = [...window.favourites, this];
+            localStorage.setItem('favourites', JSON.stringify(window.favourites));
         }
 
         element.innerText = REMOVE_BUTTON_VALUE;
@@ -48,6 +47,7 @@ export class Beer {
 
     removeFromFavourites (element) {
         window.favourites = window.favourites.filter(beer => !(beer.id === this.id));
+        localStorage.setItem('favourites', JSON.stringify(window.favourites));
         element.innerText = ADD_BUTTON_VALUE;
     }
 }

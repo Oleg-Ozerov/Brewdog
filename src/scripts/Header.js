@@ -10,7 +10,7 @@ export class Header {
     createHeaderMarkup (favourites) {
         this.newHeader = document.createElement('header');
         this.newHeader.innerHTML = `<p class="header__title">Brewdog beer</p>
-                                    <button type="button" class="header__button" disabled>Favourites [${favourites.length}]</button>`;
+                                    <button type="button" class="header__button">Favourites [${favourites.length}]</button>`;
         this.parentElement.appendChild(this.newHeader);
         this.parentElement.insertBefore(this.newHeader, this.parentElement.firstChild);
         this.newHeader.classList.add('header');

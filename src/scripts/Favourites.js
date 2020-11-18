@@ -24,6 +24,7 @@ export class Favourites {
         button.style.backgroundColor = RED_COLOR;
         button.addEventListener('click', (event) => {
             window.favourites = window.favourites.filter(element => `button${element.id}` !== event.target.id);
+            localStorage.setItem('favourites', JSON.stringify(window.favourites));
             event.target.dispatchEvent(changeFavouritesList);
             this.refreshModal();
             this.mainListButtonToggler(beerCard);
