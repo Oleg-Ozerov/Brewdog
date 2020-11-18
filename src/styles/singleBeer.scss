@@ -1,0 +1,26 @@
+.singleBeer {
+  background-color: white;
+  width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__photo {
+    height: 300px;
+    padding-top: 5px;
+  }
+
+  &__description {
+    padding-top: 10px;
+  }
+
+  &__button {
+    background-color: blueviolet;
+    color: white;
+
+  }
+
+
+
+}

@@ -4,6 +4,7 @@
   padding-top: 10px;
 
   &__card {
+    background-color: white;
     width: 560px;
     height: 300px;
     display: flex;
@@ -18,8 +19,12 @@
     }
 
     &-content {
+      position: relative;
       width: 60%;
       height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     &-title {
@@ -29,6 +34,24 @@
 
     &-description {
       padding-top: 10px;
+    }
+
+    &-button {
+      width: 100px;
+      padding: 5px;
+      font-size: 20px;
+      bottom: -10px;
+      cursor: pointer;
+      border-radius: 10px;
+      background-color: blueviolet;
+      outline: 0;
+      color: white;
+      border: 1px solid blueviolet;
+
+      &:hover {
+        color: black;
+        box-shadow: 0 0 10px 2px blueviolet;
+      }
     }
   }
 

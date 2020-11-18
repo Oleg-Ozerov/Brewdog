@@ -1,6 +1,14 @@
-import { getBeers} from "./api.js";
+import { getBeers } from "./api.js";
 import { Beer } from "./Beer.js";
-import {inputFilterReg, wrongInputValue} from "./constanses.js";
+import {
+    BLUEVIOLET_COLOR,
+    ENTER_KEY,
+    INPUT_FILTER_REG,
+    RECENT_SEARCHES,
+    RED_COLOR,
+    WRONG_INPUT_VALUE
+} from "./constanses.js";
+import {BeerModal} from "./BeerModal.js";
 
 export class BeerList {
     container;
@@ -10,8 +18,10 @@ export class BeerList {
     inputValue;
     beerList;
     recentSearches = [];
-    filtredBeers;
     loadMoreButton;
+    allBeers;
+    oldList;
+    page = 1;
 
     constructor() {
         this.parentElement = document.querySelector('.body');
@@ -19,7 +29,7 @@ export class BeerList {
 
     createContainer() {
         this.container = document.createElement('main');
-        this.container.classList.add('container')
+        this.container.classList.add('container');
         this.parentElement.appendChild(this.container);
         this.createSearchBar();
         this.createRecentSearchesBlock();
@@ -28,69 +38,71 @@ export class BeerList {
     createSearchBar() {
         this.searchBar = document.createElement('section');
         this.searchBar.classList.add('searchBar');
-        this.container.appendChild(this.searchBar)
+        this.container.appendChild(this.searchBar);
         this.createInput();
         this.createSearchButton();
-
     }
 
     createInput() {
         this.inputElement = document.createElement('input');
-
         this.inputElement.classList.add('searchBar__input');
-        this.inputElement.placeholder = 'Search...'
+        this.inputElement.placeholder = 'Search...';
         this.searchBar.appendChild(this.inputElement);
         this.addInputListeners(this.inputElement);
     }
 
     addInputListeners (element) {
-        element.addEventListener('change', event => {
+        element.addEventListener('change', (event) => {
             this.inputValue = event.target.value;
+            this.page = 1;
         })
 
         element.addEventListener('keyup', (event) => {
-            if (event.keyCode === 13 ) {
-                this.validateInput(this.inputElement)
-                if(this.inputElement.classList.contains(wrongInputValue)) {
-                    return;
-                }
-                this.removeBeerList();
-                this.createBeerList();
+            if (event.keyCode === ENTER_KEY) {
+                this.beerListCreator();
             }
         })
     }
 
-    validateInput (inputElement) {
-        !inputFilterReg.test(this.inputValue)
-            ? inputElement.classList.add(wrongInputValue)
-            : inputElement.classList.remove(wrongInputValue);
+    isInputHasClass (name) {
+        return this.inputElement.classList.contains(name);
+    }
 
+    validateInput (inputElement) {
+        !INPUT_FILTER_REG.test(this.inputValue)
+            ? inputElement.classList.add(WRONG_INPUT_VALUE)
+            : inputElement.classList.remove(WRONG_INPUT_VALUE);
     }
 
     createSearchButton () {
         const newSearchButton = document.createElement('button');
 
-        newSearchButton.classList.add('searchBar__button')
+        newSearchButton.classList.add('searchBar__button');
         this.searchBar.appendChild(newSearchButton);
         this.addSearchButtonListeners(newSearchButton);
+    }
 
+    beerListCreator () {
+        this.validateInput(this.inputElement);
+
+        if (this.isInputHasClass(WRONG_INPUT_VALUE)) {
+            return;
+        }
+
+        this.removeBeerList();
+        this.createBeerList();
     }
 
     addSearchButtonListeners(element) {
         element.addEventListener('click', () => {
-            this.validateInput(this.inputElement)
-            if(this.inputElement.classList.contains(wrongInputValue)) {
-                return;
-            }
-            this.removeBeerList();
-            this.createBeerList();
+            this.beerListCreator();
         })
     }
 
     createRecentSearchesBlock () {
         this.recentSearchesBlock = document.createElement('section');
-        this.recentSearchesBlock.classList.add('recentSearches');
-        this.recentSearchesBlock.innerHTML = `<p class="recentSearches__title">Recent searches:</p>`;
+        this.recentSearchesBlock.classList.add(RECENT_SEARCHES);
+        this.recentSearchesBlock.innerHTML = `<p class="${RECENT_SEARCHES}__title">Recent searches:</p>`;
         this.container.appendChild(this.recentSearchesBlock);
         this.createRecentSearchesList();
     }
@@ -98,84 +110,134 @@ export class BeerList {
     createRecentSearchesList () {
         const searchList = document.createElement('ul');
 
-        this.recentSearches.forEach(el => {
-            const newItem = document.createElement('li');
-
-            newItem.classList.add('recentSearches__list-item');
-            newItem.innerText = el;
-            newItem.addEventListener('click', () => {
-                this.inputValue = el;
-                this.inputElement.value = el;
-            })
-            this.addSearchButtonListeners(newItem);
-            searchList.appendChild(newItem);
+        this.recentSearches.forEach(searchItem => {
+            this.createSearchList(searchItem, searchList);
         })
-        searchList.classList.add('recentSearches__list');
+        searchList.classList.add(`${RECENT_SEARCHES}__list`);
         this.recentSearchesBlock.appendChild(searchList);
+    }
+
+    createSearchList (searchItem, searchList) {
+        const newItem = document.createElement('li');
+
+        newItem.classList.add(`${RECENT_SEARCHES}__list-item`);
+        newItem.innerText = searchItem;
+        newItem.addEventListener('click', () => {
+            this.page = 1;
+            this.inputValue = searchItem;
+            this.inputElement.value = searchItem;
+        })
+        this.addSearchButtonListeners(newItem);
+        searchList.appendChild(newItem);
     }
 
     removeRecentSearchesBlock () {
         if (this.recentSearchesBlock) {
-            const oldBlock = document.querySelector('.recentSearches');
+            const oldBlock = document.querySelector(`.${RECENT_SEARCHES}`);
 
             oldBlock.parentNode.removeChild(oldBlock);
         }
     }
 
-    async createBeerList () {
-        const allBeers = await getBeers();
-        let counter = 0;
-
-        this.beerList = document.createElement('section');
-        this.filtredBeers = allBeers.filter(beer => beer.name.toLowerCase().includes(this.inputValue.toLocaleLowerCase()));
-
-        if (this.filtredBeers.length === 0 ) {
+    rescentSearchesBlockRender() {
+        if (this.allBeers.length === 0 ) {
             this.addError(this.beerList);
         } else {
             this.recentSearches = [this.inputValue, ...this.recentSearches];
             this.removeRecentSearchesBlock();
             this.createRecentSearchesBlock();
         }
+    }
 
+    async createBeerList () {
+        this.allBeers = await getBeers(this.inputValue, 5, this.page);
+        this.beerList = document.createElement('section');
+        this.rescentSearchesBlockRender();
         this.beerList.classList.add('beerList');
         this.container.appendChild(this.beerList);
         this.firstBeerListRender();
+    }
 
+    addListenersOnCard(newCard) {
+        const button = document.querySelector(`#button${newCard.id}`);
 
+        newCard.addButtonListener(button);
+
+        const cardTitle = document.querySelector(`#title${newCard.id}`);
+
+        cardTitle.addEventListener('click',async () => {
+            await this.createSingleBearModal(newCard, button);
+
+        })
+    }
+
+    async createSingleBearModal (newCard, button) {
+        const singleBeerModal = new BeerModal(newCard);
+        const markup = await singleBeerModal.createModal();
+
+        this.parentElement.appendChild(markup);
+
+        const modalButton = markup.querySelector(`#button${newCard.id}`);
+
+        modalButton.innerText = button.innerText;
+        modalButton.style.backgroundColor !== RED_COLOR
+            ? modalButton.style.backgroundColor = BLUEVIOLET_COLOR
+            : modalButton.style.backgroundColor = RED_COLOR;
+
+        singleBeerModal.card.addButtonListener(modalButton);
+
+        modalButton.addEventListener('click', () => {
+            button.innerText = modalButton.innerText;
+            button.style.backgroundColor === RED_COLOR
+                ? button.style.backgroundColor = BLUEVIOLET_COLOR
+                : button.style.backgroundColor = RED_COLOR;
+        })
+    }
+
+    createBeerCardForEach () {
+        this.allBeers.forEach((beer) => {
+            const newCard = new Beer({
+                id : beer.id,
+                photo: beer['image_url'],
+                title: beer.name,
+                description: beer.description
+            });
+
+            this.beerList.appendChild(newCard.createBeerCard());
+            this.addListenersOnCard(newCard);
+        })
     }
 
     firstBeerListRender () {
-        this.filtredBeers.slice(0, 5).forEach((beer) => {
-            const newCard = new Beer(beer['image_url'], beer.name, beer.description);
+        this.createBeerCardForEach();
 
-            this.beerList.appendChild(newCard.createBeerCard());
-        })
-        this.createLoadMoreButton();
-        this.createScrollButton();
-        this.beerList.firstChild.setAttribute('id', 'forScroll');
-        this.scrollToFirstCard();
-    }
-
-    loadMoreItems () {
-        while (this.beerList.hasChildNodes()) {
-            this.beerList.removeChild(this.beerList.firstChild);
+        if (this.allBeers.length > 0) {
+            this.createLoadMoreButton();
+            this.createScrollButton();
+            this.beerList.firstChild.setAttribute('id', 'forScroll');
+            this.scrollToFirstCard();
         }
 
-        this.filtredBeers.forEach((beer) => {
-            const newCard = new Beer(beer['image_url'], beer.name, beer.description);
-
-            this.beerList.appendChild(newCard.createBeerCard());
-        })
-        this.beerList.firstChild.setAttribute('id', 'forScroll');
-
-        this.createScrollButton();
+        this.page++;
     }
 
-    addError (el) {
+    async loadMoreItems () {
+        this.allBeers = await getBeers(this.inputValue, 5, this.page);
+        this.createBeerCardForEach();
+
+        if (this.allBeers.length === this.oldList.length) {
+            this.createLoadMoreButton();
+        }
+
+        this.createScrollButton();
+        this.page++;
+    }
+
+    addError (domElement) {
         const error = document.createElement('p');
 
         error.innerText = 'There were no properties found for the given location.';
-        el.appendChild(error);
+        domElement.appendChild(error);
     }
 
     scrollToFirstCard () {
@@ -184,7 +246,7 @@ export class BeerList {
 
     removeBeerList () {
         if (this.beerList) {
-            const oldList = document.querySelector('.beerList')
+            const oldList = document.querySelector('.beerList');
 
             oldList.parentNode.removeChild(oldList);
         }
@@ -192,7 +254,6 @@ export class BeerList {
 
     createLoadMoreButton () {
         this.loadMoreButton = document.createElement('button');
-
         this.loadMoreButton.innerText = 'Load more';
         this.loadMoreButton.classList.add('beerList__button');
         this.addButtonListener(this.loadMoreButton);
@@ -200,9 +261,15 @@ export class BeerList {
     }
 
     addButtonListener (element) {
-        element.addEventListener('click', () => {
+        element.addEventListener('click', async () => {
+            this.oldList = this.allBeers;
+
             element.style.display = 'none';
-            this.filtredBeers.length < 6 ? this.noMoreItemsMessege() : this.loadMoreItems();
+            await this.loadMoreItems();
+
+            if (this.allBeers.length !== this.oldList.length) {
+                this.noMoreItemsMessege();
+            }
         })
     }
 
@@ -214,7 +281,6 @@ export class BeerList {
         scrollButton.addEventListener('click', () => {
             this.scrollToFirstCard();
         })
-
         this.beerList.appendChild(scrollButton);
     }
 
