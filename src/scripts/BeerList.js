@@ -5,7 +5,7 @@ import {
     ENTER_KEY,
     INPUT_FILTER_REG,
     RECENT_SEARCHES,
-    RED_COLOR, REMOVE_BUTTON_VALUE,
+    RED_COLOR, REMOVE_BUTTON_VALUE, SCROLL_ID,
     WRONG_INPUT_VALUE
 } from "./constanses.js";
 import {BeerModal} from "./BeerModal.js";
@@ -52,13 +52,13 @@ export class BeerList {
     }
 
     addInputListeners (element) {
-        element.addEventListener('change', (event) => {
-            this.inputValue = event.target.value;
+        element.addEventListener('change', ({ target: { value } }) => {
+            this.inputValue = value;
             this.page = 1;
         })
 
-        element.addEventListener('keyup', (event) => {
-            if (event.keyCode === ENTER_KEY) {
+        element.addEventListener('keyup', ({ keyCode }) => {
+            if (keyCode === ENTER_KEY) {
                 this.beerListCreator();
             }
         })
@@ -85,12 +85,10 @@ export class BeerList {
     beerListCreator () {
         this.validateInput(this.inputElement);
 
-        if (this.isInputHasClass(WRONG_INPUT_VALUE)) {
-            return;
+        if (!this.isInputHasClass(WRONG_INPUT_VALUE)) {
+            this.removeBeerList();
+            this.createBeerList();
         }
-
-        this.removeBeerList();
-        this.createBeerList();
     }
 
     addSearchButtonListeners(element) {
@@ -140,7 +138,7 @@ export class BeerList {
     }
 
     rescentSearchesBlockRender() {
-        if (this.allBeers.length === 0 ) {
+        if (!this.allBeers.length) {
             this.addError(this.beerList);
         } else {
             this.recentSearches = [this.inputValue, ...this.recentSearches];
@@ -151,7 +149,7 @@ export class BeerList {
     }
 
     async createBeerList () {
-        this.allBeers = await getBeers(this.inputValue, 5, this.page);
+        this.allBeers = await getBeers(this.inputValue, this.page);
         this.beerList = document.createElement('section');
         this.rescentSearchesBlockRender();
         this.beerList.classList.add('beerList');
@@ -159,10 +157,14 @@ export class BeerList {
         this.firstBeerListRender();
     }
 
+    isItemAlreadyInFavourites (newCard) {
+        return window.favourites.find(item => item.id === newCard.id)
+    }
+
     addListenersOnCard(newCard) {
         const button = document.querySelector(`#button${newCard.id}`);
 
-        if (window.favourites.find(item => item.id === newCard.id)) {
+        if (this.isItemAlreadyInFavourites(newCard)) {
             button.innerText = REMOVE_BUTTON_VALUE;
             button.style.backgroundColor = RED_COLOR;
         }
@@ -213,10 +215,10 @@ export class BeerList {
     firstBeerListRender () {
         this.createBeerCardForEach();
 
-        if (this.allBeers.length > 0) {
+        if (this.allBeers.length) {
             this.createLoadMoreButton();
             this.createScrollButton();
-            this.beerList.firstChild.setAttribute('id', 'forScroll');
+            this.beerList.firstChild.setAttribute('id', SCROLL_ID);
             this.scrollToFirstCard();
         }
 
@@ -224,7 +226,7 @@ export class BeerList {
     }
 
     async loadMoreItems () {
-        this.allBeers = await getBeers(this.inputValue, 5, this.page);
+        this.allBeers = await getBeers(this.inputValue, this.page);
         this.createBeerCardForEach();
 
         if (this.allBeers.length === this.oldList.length) {
@@ -243,7 +245,7 @@ export class BeerList {
     }
 
     scrollToFirstCard () {
-        document.querySelector('#forScroll').scrollIntoView({behavior: "smooth"});
+        document.querySelector(`#${SCROLL_ID}`).scrollIntoView({behavior: "smooth"});
     }
 
     removeBeerList () {

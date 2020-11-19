@@ -7,3 +7,4 @@ export const RED_COLOR = 'red';
 export const BLUEVIOLET_COLOR = 'blueviolet';
 export const REMOVE_BUTTON_VALUE = 'Remove';
 export const ADD_BUTTON_VALUE = 'Add';
+export const SCROLL_ID = 'forScroll'

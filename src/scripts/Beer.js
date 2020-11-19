@@ -2,11 +2,13 @@ import {changeFavouritesList} from "./main.js";
 import {ADD_BUTTON_VALUE, BLUEVIOLET_COLOR, RED_COLOR, REMOVE_BUTTON_VALUE} from "./constanses.js";
 
 export class Beer {
+    id;
+    photo;
+    description;
+    title;
+
     constructor(beer) {
-        this.id = beer.id;
-        this.photo = beer.photo;
-        this.title = beer.title;
-        this.description = beer.description;
+        Object.assign(this, beer);
     }
 
     createBeerCard() {
@@ -26,23 +28,34 @@ export class Beer {
 
     addButtonListener (element) {
         element.addEventListener('click', (event) => {
-            element.innerText === ADD_BUTTON_VALUE ? this.addToFavourites(element) : this.removeFromFavourites(element);
-            element.innerText === REMOVE_BUTTON_VALUE ? element.style.backgroundColor = RED_COLOR : element.style.backgroundColor = BLUEVIOLET_COLOR;
-
+            this.beerCardButtonHandler(element);
             event.target.dispatchEvent(changeFavouritesList);
         })
     }
 
-    addToFavourites (element) {
-        if (!window.favourites.find(beer => {
+    beerCardButtonHandler (element) {
+        element.innerText === ADD_BUTTON_VALUE
+            ? this.addToFavourites(element)
+            : this.removeFromFavourites(element);
+
+        element.innerText === REMOVE_BUTTON_VALUE
+            ? element.style.backgroundColor = RED_COLOR
+            : element.style.backgroundColor = BLUEVIOLET_COLOR;
+    }
+
+    areIdsEqual () {
+        return !window.favourites.find(beer => {
             beer.id === this.id;
-        })) {
+        })
+    }
+
+    addToFavourites (element) {
+        if (this.areIdsEqual()) {
             window.favourites = [...window.favourites, this];
             localStorage.setItem('favourites', JSON.stringify(window.favourites));
         }
 
         element.innerText = REMOVE_BUTTON_VALUE;
-
     }
 
     removeFromFavourites (element) {

@@ -13,25 +13,27 @@ window.addEventListener('load', () => {
     createBearList();
 })
 
-function setFavourites () {
-    if (localStorage.getItem('favourites')) {
-        const localItems = JSON.parse(localStorage.getItem('favourites'));
+function createItemsWithClass () {
+    const localItems = JSON.parse(localStorage.getItem('favourites'));
 
-        window.favourites = localItems.map(item => {
-            const itemWithClass = new Beer({
-                id: item.id,
-                photo: item.photo,
-                title: item.title,
-                description: item.description
-            })
-
-            return itemWithClass;
+    window.favourites = localItems.map(({ id, photo, title, description }) => {
+        return new Beer({
+            id,
+            photo,
+            title,
+            description,
         })
-    } else window.favourites = [];
+    })
+}
+
+function setFavourites () {
+    localStorage.getItem('favourites')
+        ? createItemsWithClass()
+        : window.favourites = [];
 }
 
 function favouritesButtonToggler () {
-    if (window.favourites.length === 0) {
+    if (!window.favourites.length) {
         const headerButton = document.querySelector('.header__button');
 
         headerButton.setAttribute('disabled', 'disabled');
@@ -59,7 +61,7 @@ document.addEventListener('changeFav', () => {
     header.removeHeader();
     createHeader();
 
-    if (window.favourites.length > 0) {
+    if (window.favourites.length) {
         const headerButton = document.querySelector('.header__button');
 
         headerButton.removeAttribute('disabled');

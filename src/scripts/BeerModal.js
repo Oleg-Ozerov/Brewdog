@@ -12,7 +12,7 @@ export class BeerModal {
     async createModal () {
         this.beerCard = await getSingleBeer(this.card.id);
 
-        const item = this.beerCard[0];
+        const [ item ] = this.beerCard;
 
         this.modalWindow = document.createElement('section');
         this.modalWindow.classList.add('favourites');
@@ -27,14 +27,14 @@ export class BeerModal {
     }
 
     addWindowListeners () {
-        window.addEventListener('click', (event) => {
-            if (event.target === this.modalWindow) {
+        window.addEventListener('click', ({ target}) => {
+            if (target === this.modalWindow) {
                 this.removeModal();
             }
         })
 
-        window.addEventListener('keyup', (event) => {
-            if (event.keyCode === ESCAPE_KEY) {
+        window.addEventListener('keyup', ({ keyCode }) => {
+            if (keyCode === ESCAPE_KEY) {
                 this.removeModal();
             }
         })

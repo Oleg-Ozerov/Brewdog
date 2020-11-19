@@ -17,15 +17,19 @@ export class Favourites {
         this.parentElement.appendChild(this.modalWindow);
     }
 
+    filterFavourites (target) {
+        window.favourites = window.favourites.filter(element => `button${element.id}` !== target.id);
+    }
+
     buttonSetup (beerList, beerCard) {
         const button = beerList.querySelector(`#button${beerCard.id}`);
 
         button.innerText = REMOVE_BUTTON_VALUE;
         button.style.backgroundColor = RED_COLOR;
-        button.addEventListener('click', (event) => {
-            window.favourites = window.favourites.filter(element => `button${element.id}` !== event.target.id);
+        button.addEventListener('click', ({ target }) => {
+            this.filterFavourites(target)
             localStorage.setItem('favourites', JSON.stringify(window.favourites));
-            event.target.dispatchEvent(changeFavouritesList);
+            target.dispatchEvent(changeFavouritesList);
             this.refreshModal();
             this.mainListButtonToggler(beerCard);
         })
@@ -66,14 +70,14 @@ export class Favourites {
     }
 
     addModalClosers () {
-        window.addEventListener('click', (event) => {
-            if (event.target === this.modalWindow) {
+        window.addEventListener('click', ({ target }) => {
+            if (target === this.modalWindow) {
                 this.removeFavModal();
             }
         })
 
-        window.addEventListener('keyup', (event) => {
-            if (event.keyCode === ESCAPE_KEY) {
+        window.addEventListener('keyup', ({ keyCode }) => {
+            if (keyCode === ESCAPE_KEY) {
                 this.removeFavModal();
             }
         })
