@@ -1,0 +1,20 @@
+.recentSearches {
+  margin-top: 20px;
+
+  &__list {
+    padding-left: 10px;
+    margin-top: 10px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    width: 560px;
+
+    &-item {
+      line-height: 30px;
+      cursor: pointer;
+
+      &:hover {
+        color: blueviolet;
+      }
+    }
+  }
+}
