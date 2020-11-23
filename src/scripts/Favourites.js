@@ -3,6 +3,8 @@ import {ADD_BUTTON_VALUE, BLUEVIOLET_COLOR, ESCAPE_KEY, RED_COLOR, REMOVE_BUTTON
 
 export class Favourites {
     modalWindow;
+    escapeListenerBind = this.escapeListener.bind(this);
+    modalCLickListenerBind = this.modalClickListener.bind(this);
 
     constructor() {
         this.parentElement = document.querySelector('.body');
@@ -27,7 +29,7 @@ export class Favourites {
         button.innerText = REMOVE_BUTTON_VALUE;
         button.style.backgroundColor = RED_COLOR;
         button.addEventListener('click', ({ target }) => {
-            this.filterFavourites(target)
+            this.filterFavourites(target);
             localStorage.setItem('favourites', JSON.stringify(window.favourites));
             target.dispatchEvent(changeFavouritesList);
             this.refreshModal();
@@ -46,8 +48,10 @@ export class Favourites {
     mainListButtonToggler (beerCard) {
         const mainListButton = document.querySelector(`#button${beerCard.id}`);
 
-        mainListButton.innerText = ADD_BUTTON_VALUE;
-        mainListButton.style.backgroundColor = BLUEVIOLET_COLOR;
+        if (mainListButton) {
+            mainListButton.innerText = ADD_BUTTON_VALUE;
+            mainListButton.style.backgroundColor = BLUEVIOLET_COLOR;
+        }
     }
 
     createList() {
@@ -70,17 +74,23 @@ export class Favourites {
     }
 
     addModalClosers () {
-        window.addEventListener('click', ({ target }) => {
-            if (target === this.modalWindow) {
-                this.removeFavModal();
-            }
-        })
+        window.addEventListener('click', this.modalCLickListenerBind );
+        window.addEventListener('keyup', this.escapeListenerBind);
+    }
 
-        window.addEventListener('keyup', ({ code }) => {
-            if (code === ESCAPE_KEY) {
-                this.removeFavModal();
-            }
-        })
+    modalClickListener({target}) {
+        if (target === this.modalWindow) {
+            this.removeFavModal();
+            window.removeEventListener('keyup', this.escapeListenerBind)
+        }
+    }
+
+
+    escapeListener({code}) {
+        if (code === ESCAPE_KEY) {
+            this.removeFavModal();
+            window.removeEventListener('keyup', this.escapeListenerBind)
+        }
     }
 }
 

@@ -4,6 +4,8 @@ import {ESCAPE_KEY} from "./constanses.js";
 export class BeerModal {
     beerCard;
     modalWindow;
+    escapeListenerBind = this.escapeListener.bind(this);
+    modalClickListenerBind = this.modalClickListener.bind(this);
 
     constructor(newCard) {
         this.card = newCard;
@@ -27,17 +29,22 @@ export class BeerModal {
     }
 
     addWindowListeners () {
-        window.addEventListener('click', ({ target}) => {
-            if (target === this.modalWindow) {
-                this.removeModal();
-            }
-        })
+        window.addEventListener('click', this.modalClickListenerBind);
+        window.addEventListener('keyup', this.escapeListenerBind);
+    }
 
-        window.addEventListener('keyup', ({ code }) => {
-            if (code === ESCAPE_KEY) {
-                this.removeModal();
-            }
-        })
+    modalClickListener ({target}) {
+        if (target === this.modalWindow) {
+            this.removeModal();
+            window.removeEventListener('keyup', this.escapeListenerBind);
+        }
+    }
+
+    escapeListener({code}) {
+        if (code === ESCAPE_KEY) {
+            this.removeModal();
+            window.removeEventListener('keyup', this.escapeListenerBind);
+        }
     }
 
     removeModal () {
