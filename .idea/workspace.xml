@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5df6f081-aa10-43ef-a489-726123a0e951" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/scripts/BeerList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/scripts/BeerList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scripts/BeerModal.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/scripts/BeerModal.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scripts/Favourites.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/scripts/Favourites.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scripts/constanses.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/scripts/constanses.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="develop" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1kC0CcUVmTtEiWHxrUqLY61iCZZ" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RunManager">
+    <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Brewdog/index.html" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JavaScript Debug.index.html" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5df6f081-aa10-43ef-a489-726123a0e951" name="Default Changelist" comment="" />
+      <created>1605189140963</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1605189140963</updated>
+      <workItem from="1605189142540" duration="5849000" />
+      <workItem from="1605195048617" duration="4435000" />
+      <workItem from="1605261822208" duration="22652000" />
+      <workItem from="1605604498620" duration="40133000" />
+      <workItem from="1605789398089" duration="8194000" />
+      <workItem from="1606125471242" duration="74000" />
+      <workItem from="1606126093206" duration="1023000" />
+    </task>
+    <task id="LOCAL-00001" summary="US001: Created a basic homepage">
+      <created>1605197392523</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1605197392523</updated>
+    </task>
+    <task id="LOCAL-00002" summary="US002: added ability to search">
+      <created>1605274741399</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1605274741415</updated>
+    </task>
+    <task id="LOCAL-00003" summary="US003: Added possibility to load more items">
+      <created>1605279635695</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1605279635695</updated>
+    </task>
+    <task id="LOCAL-00004" summary="US004: Added ability to recall searches">
+      <created>1605280451047</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1605280451047</updated>
+    </task>
+    <task id="LOCAL-00005" summary="US008: added favourites list, added single beer list">
+      <created>1605707323954</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1605707323954</updated>
+    </task>
+    <task id="LOCAL-00006" summary="US009: added ability to client-side storage">
+      <created>1605711545369</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1605711545369</updated>
+    </task>
+    <task id="LOCAL-00007" summary="US009: fixed code style">
+      <created>1605795289410</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1605795289410</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="US001: Created a basic homepage" />
+    <MESSAGE value="US002: added ability to search" />
+    <MESSAGE value="US003: Added possibility to load more items" />
+    <MESSAGE value="US004: Added ability to recall searches" />
+    <MESSAGE value="US008: added favourites list, added single beer list" />
+    <MESSAGE value="US009: added ability to client-side storage" />
+    <MESSAGE value="US009: fixed code style" />
+    <option name="LAST_COMMIT_MESSAGE" value="US009: fixed code style" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="532" y="202" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1605266994608">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="532" y="202" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1605266994608" />
+    <state x="147" y="64" key="DiffContextDialog" timestamp="1606126317510">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="147" y="64" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1606126317510" />
+    <state x="436" y="190" key="EditFileWatcherDialog" timestamp="1605191619115">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="436" y="190" key="EditFileWatcherDialog/0.0.1536.824@0.0.1536.824" timestamp="1605191619115" />
+    <state x="361" y="127" key="Vcs.Push.Dialog.v2" timestamp="1605795295246">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="361" y="127" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1605795295246" />
+    <state x="479" y="129" width="577" height="566" key="find.popup" timestamp="1606127110305">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="479" y="129" width="577" height="566" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1606127110305" />
+    <state x="536" y="43" key="git4idea.branch.GitSmartOperationDialog" timestamp="1606126321948">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="536" y="43" key="git4idea.branch.GitSmartOperationDialog/0.0.1536.824@0.0.1536.824" timestamp="1606126321948" />
+    <state x="425" y="187" key="run.anything.popup" timestamp="1605264243282">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1605264243282" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1605265051282">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1605265051282" />
+  </component>
+</project>

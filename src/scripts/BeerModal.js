@@ -33,8 +33,8 @@ export class BeerModal {
             }
         })
 
-        window.addEventListener('keyup', ({ keyCode }) => {
-            if (keyCode === ESCAPE_KEY) {
+        window.addEventListener('keyup', ({ code }) => {
+            if (code === ESCAPE_KEY) {
                 this.removeModal();
             }
         })

@@ -1,0 +1,83 @@
+Index: src/scripts/BeerList.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { getBeers } from \"./api.js\";\r\nimport { Beer } from \"./Beer.js\";\r\nimport {\r\n    BLUEVIOLET_COLOR,\r\n    ENTER_KEY,\r\n    INPUT_FILTER_REG,\r\n    RECENT_SEARCHES,\r\n    RED_COLOR, REMOVE_BUTTON_VALUE, SCROLL_ID,\r\n    WRONG_INPUT_VALUE\r\n} from \"./constanses.js\";\r\nimport {BeerModal} from \"./BeerModal.js\";\r\n\r\nexport class BeerList {\r\n    container;\r\n    searchBar;\r\n    recentSearchesBlock;\r\n    inputElement;\r\n    inputValue;\r\n    beerList;\r\n    recentSearches = [];\r\n    loadMoreButton;\r\n    allBeers;\r\n    oldList;\r\n    page = 1;\r\n\r\n    constructor() {\r\n        this.parentElement = document.querySelector('.body');\r\n    }\r\n\r\n    createContainer() {\r\n        this.container = document.createElement('main');\r\n        this.container.classList.add('container');\r\n        this.parentElement.appendChild(this.container);\r\n        this.createSearchBar();\r\n        this.createRecentSearchesBlock();\r\n    }\r\n\r\n    createSearchBar() {\r\n        this.searchBar = document.createElement('section');\r\n        this.searchBar.classList.add('searchBar');\r\n        this.container.appendChild(this.searchBar);\r\n        this.createInput();\r\n        this.createSearchButton();\r\n    }\r\n\r\n    createInput() {\r\n        this.inputElement = document.createElement('input');\r\n        this.inputElement.classList.add('searchBar__input');\r\n        this.inputElement.placeholder = 'Search...';\r\n        this.searchBar.appendChild(this.inputElement);\r\n        this.addInputListeners(this.inputElement);\r\n    }\r\n\r\n    addInputListeners (element) {\r\n        element.addEventListener('change', ({ target: { value } }) => {\r\n            this.inputValue = value;\r\n            this.page = 1;\r\n        })\r\n\r\n        element.addEventListener('keyup', ({ keyCode }) => {\r\n            if (keyCode === ENTER_KEY) {\r\n                this.beerListCreator();\r\n            }\r\n        })\r\n    }\r\n\r\n    isInputHasClass (name) {\r\n        return this.inputElement.classList.contains(name);\r\n    }\r\n\r\n    validateInput (inputElement) {\r\n        !INPUT_FILTER_REG.test(this.inputValue)\r\n            ? inputElement.classList.add(WRONG_INPUT_VALUE)\r\n            : inputElement.classList.remove(WRONG_INPUT_VALUE);\r\n    }\r\n\r\n    createSearchButton () {\r\n        const newSearchButton = document.createElement('button');\r\n\r\n        newSearchButton.classList.add('searchBar__button');\r\n        this.searchBar.appendChild(newSearchButton);\r\n        this.addSearchButtonListeners(newSearchButton);\r\n    }\r\n\r\n    beerListCreator () {\r\n        this.validateInput(this.inputElement);\r\n\r\n        if (!this.isInputHasClass(WRONG_INPUT_VALUE)) {\r\n            this.removeBeerList();\r\n            this.createBeerList();\r\n        }\r\n    }\r\n\r\n    addSearchButtonListeners(element) {\r\n        element.addEventListener('click', () => {\r\n            this.beerListCreator();\r\n        })\r\n    }\r\n\r\n    createRecentSearchesBlock () {\r\n        this.recentSearchesBlock = document.createElement('section');\r\n        this.recentSearchesBlock.classList.add(RECENT_SEARCHES);\r\n        this.recentSearchesBlock.innerHTML = `<p class=\"${RECENT_SEARCHES}__title\">Recent searches:</p>`;\r\n        this.container.appendChild(this.recentSearchesBlock);\r\n        this.createRecentSearchesList();\r\n    }\r\n\r\n    createRecentSearchesList () {\r\n        const searchList = document.createElement('ul');\r\n\r\n        this.recentSearches.forEach(searchItem => {\r\n            this.createSearchList(searchItem, searchList);\r\n        })\r\n        searchList.classList.add(`${RECENT_SEARCHES}__list`);\r\n        this.recentSearchesBlock.appendChild(searchList);\r\n    }\r\n\r\n    createSearchList (searchItem, searchList) {\r\n        const newItem = document.createElement('li');\r\n\r\n        newItem.classList.add(`${RECENT_SEARCHES}__list-item`);\r\n        newItem.innerText = searchItem;\r\n        newItem.addEventListener('click', () => {\r\n            this.page = 1;\r\n            this.inputValue = searchItem;\r\n            this.inputElement.value = searchItem;\r\n        })\r\n        this.addSearchButtonListeners(newItem);\r\n        searchList.appendChild(newItem);\r\n    }\r\n\r\n    removeRecentSearchesBlock () {\r\n        if (this.recentSearchesBlock) {\r\n            const oldBlock = document.querySelector(`.${RECENT_SEARCHES}`);\r\n\r\n            oldBlock.parentNode.removeChild(oldBlock);\r\n        }\r\n    }\r\n\r\n    rescentSearchesBlockRender() {\r\n        if (!this.allBeers.length) {\r\n            this.addError(this.beerList);\r\n        } else {\r\n            this.recentSearches = [this.inputValue, ...this.recentSearches];\r\n            localStorage.setItem('recentSearches', JSON.stringify(this.recentSearches));\r\n            this.removeRecentSearchesBlock();\r\n            this.createRecentSearchesBlock();\r\n        }\r\n    }\r\n\r\n    async createBeerList () {\r\n        this.allBeers = await getBeers(this.inputValue, this.page);\r\n        this.beerList = document.createElement('section');\r\n        this.rescentSearchesBlockRender();\r\n        this.beerList.classList.add('beerList');\r\n        this.container.appendChild(this.beerList);\r\n        this.firstBeerListRender();\r\n    }\r\n\r\n    isItemAlreadyInFavourites (newCard) {\r\n        return window.favourites.find(item => item.id === newCard.id)\r\n    }\r\n\r\n    addListenersOnCard(newCard) {\r\n        const button = document.querySelector(`#button${newCard.id}`);\r\n\r\n        if (this.isItemAlreadyInFavourites(newCard)) {\r\n            button.innerText = REMOVE_BUTTON_VALUE;\r\n            button.style.backgroundColor = RED_COLOR;\r\n        }\r\n\r\n        newCard.addButtonListener(button);\r\n\r\n        const cardTitle = document.querySelector(`#title${newCard.id}`);\r\n\r\n        cardTitle.addEventListener('click',async () => {\r\n            await this.createSingleBearModal(newCard, button);\r\n        })\r\n    }\r\n\r\n    async createSingleBearModal (newCard, button) {\r\n        const singleBeerModal = new BeerModal(newCard);\r\n        const markup = await singleBeerModal.createModal();\r\n\r\n        this.parentElement.appendChild(markup);\r\n\r\n        const modalButton = markup.querySelector(`#button${newCard.id}`);\r\n\r\n        modalButton.innerText = button.innerText;\r\n        modalButton.style.backgroundColor = button.style.backgroundColor;\r\n        singleBeerModal.card.addButtonListener(modalButton);\r\n\r\n        modalButton.addEventListener('click', () => {\r\n            button.innerText = modalButton.innerText;\r\n            button.style.backgroundColor === RED_COLOR\r\n                ? button.style.backgroundColor = BLUEVIOLET_COLOR\r\n                : button.style.backgroundColor = RED_COLOR;\r\n        })\r\n    }\r\n\r\n    createBeerCardForEach () {\r\n        this.allBeers.forEach((beer) => {\r\n            const newCard = new Beer({\r\n                id : beer.id,\r\n                photo: beer['image_url'],\r\n                title: beer.name,\r\n                description: beer.description\r\n            });\r\n\r\n            this.beerList.appendChild(newCard.createBeerCard());\r\n            this.addListenersOnCard(newCard);\r\n        })\r\n    }\r\n\r\n    firstBeerListRender () {\r\n        this.createBeerCardForEach();\r\n\r\n        if (this.allBeers.length) {\r\n            this.createLoadMoreButton();\r\n            this.createScrollButton();\r\n            this.beerList.firstChild.setAttribute('id', SCROLL_ID);\r\n            this.scrollToFirstCard();\r\n        }\r\n\r\n        this.page++;\r\n    }\r\n\r\n    async loadMoreItems () {\r\n        this.allBeers = await getBeers(this.inputValue, this.page);\r\n        this.createBeerCardForEach();\r\n\r\n        if (this.allBeers.length === this.oldList.length) {\r\n            this.createLoadMoreButton();\r\n        }\r\n\r\n        this.createScrollButton();\r\n        this.page++;\r\n    }\r\n\r\n    addError (domElement) {\r\n        const error = document.createElement('p');\r\n\r\n        error.innerText = 'There were no properties found for the given location.';\r\n        domElement.appendChild(error);\r\n    }\r\n\r\n    scrollToFirstCard () {\r\n        document.querySelector(`#${SCROLL_ID}`).scrollIntoView({behavior: \"smooth\"});\r\n    }\r\n\r\n    removeBeerList () {\r\n        if (this.beerList) {\r\n            const oldList = document.querySelector('.beerList');\r\n\r\n            oldList.parentNode.removeChild(oldList);\r\n        }\r\n    }\r\n\r\n    createLoadMoreButton () {\r\n        this.loadMoreButton = document.createElement('button');\r\n        this.loadMoreButton.innerText = 'Load more';\r\n        this.loadMoreButton.classList.add('beerList__button');\r\n        this.addButtonListener(this.loadMoreButton);\r\n        this.beerList.appendChild(this.loadMoreButton);\r\n    }\r\n\r\n    addButtonListener (element) {\r\n        element.addEventListener('click', async () => {\r\n            this.oldList = this.allBeers;\r\n\r\n            element.style.display = 'none';\r\n            await this.loadMoreItems();\r\n\r\n            if (this.allBeers.length !== this.oldList.length) {\r\n                this.noMoreItemsMessege();\r\n            }\r\n        })\r\n    }\r\n\r\n    createScrollButton () {\r\n        const scrollButton = document.createElement('div');\r\n\r\n        scrollButton.innerText = '\uD83E\uDC15';\r\n        scrollButton.classList.add('beerList__scrollButton');\r\n        scrollButton.addEventListener('click', () => {\r\n            this.scrollToFirstCard();\r\n        })\r\n        this.beerList.appendChild(scrollButton);\r\n    }\r\n\r\n    noMoreItemsMessege () {\r\n        const warningMessege = document.createElement('div');\r\n\r\n        warningMessege.classList.add('beerList__warning')\r\n        warningMessege.innerText = 'There were no properties found for the given beer.';\r\n        this.beerList.appendChild(warningMessege);\r\n    }\r\n\r\n    initialRender () {\r\n        this.createContainer();\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/scripts/BeerList.js	(revision 3ac3cb28a12fb78d8719d00a1e6705b01c6063a7)
++++ src/scripts/BeerList.js	(date 1606125279503)
+@@ -5,7 +5,7 @@
+     ENTER_KEY,
+     INPUT_FILTER_REG,
+     RECENT_SEARCHES,
+-    RED_COLOR, REMOVE_BUTTON_VALUE, SCROLL_ID,
++    RED_COLOR, REMOVE_BUTTON_VALUE,
+     WRONG_INPUT_VALUE
+ } from "./constanses.js";
+ import {BeerModal} from "./BeerModal.js";
+@@ -138,7 +138,7 @@
+     }
+ 
+     rescentSearchesBlockRender() {
+-        if (!this.allBeers.length) {
++        if (this.allBeers.length) {
+             this.addError(this.beerList);
+         } else {
+             this.recentSearches = [this.inputValue, ...this.recentSearches];
+@@ -149,7 +149,7 @@
+     }
+ 
+     async createBeerList () {
+-        this.allBeers = await getBeers(this.inputValue, this.page);
++        this.allBeers = await getBeers(this.inputValue, 5, this.page);
+         this.beerList = document.createElement('section');
+         this.rescentSearchesBlockRender();
+         this.beerList.classList.add('beerList');
+@@ -157,14 +157,10 @@
+         this.firstBeerListRender();
+     }
+ 
+-    isItemAlreadyInFavourites (newCard) {
+-        return window.favourites.find(item => item.id === newCard.id)
+-    }
+-
+     addListenersOnCard(newCard) {
+         const button = document.querySelector(`#button${newCard.id}`);
+ 
+-        if (this.isItemAlreadyInFavourites(newCard)) {
++        if (window.favourites.find(item => item.id === newCard.id)) {
+             button.innerText = REMOVE_BUTTON_VALUE;
+             button.style.backgroundColor = RED_COLOR;
+         }
+@@ -215,10 +211,10 @@
+     firstBeerListRender () {
+         this.createBeerCardForEach();
+ 
+-        if (this.allBeers.length) {
++        if (this.allBeers.length > 0) {
+             this.createLoadMoreButton();
+             this.createScrollButton();
+-            this.beerList.firstChild.setAttribute('id', SCROLL_ID);
++            this.beerList.firstChild.setAttribute('id', 'forScroll');
+             this.scrollToFirstCard();
+         }
+ 
+@@ -226,7 +222,7 @@
+     }
+ 
+     async loadMoreItems () {
+-        this.allBeers = await getBeers(this.inputValue, this.page);
++        this.allBeers = await getBeers(this.inputValue, 5, this.page);
+         this.createBeerCardForEach();
+ 
+         if (this.allBeers.length === this.oldList.length) {
+@@ -245,7 +241,7 @@
+     }
+ 
+     scrollToFirstCard () {
+-        document.querySelector(`#${SCROLL_ID}`).scrollIntoView({behavior: "smooth"});
++        document.querySelector('#forScroll').scrollIntoView({behavior: "smooth"});
+     }
+ 
+     removeBeerList () {
