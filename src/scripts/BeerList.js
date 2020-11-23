@@ -55,7 +55,7 @@ export class BeerList {
         element.addEventListener('change', ({ target: { value } }) => {
             this.inputValue = value;
             this.page = 1;
-        })
+        });
 
         element.addEventListener('keyup', ({ code }) => {
             if (code === ENTER_KEY) {
@@ -93,6 +93,7 @@ export class BeerList {
 
     addSearchButtonListeners(element) {
         element.addEventListener('click', () => {
+            this.page = 1;
             this.beerListCreator();
         })
     }
@@ -110,7 +111,7 @@ export class BeerList {
 
         this.recentSearches.forEach(searchItem => {
             this.createSearchList(searchItem, searchList);
-        })
+        });
         searchList.classList.add(`${RECENT_SEARCHES}__list`);
         this.recentSearchesBlock.appendChild(searchList);
     }
@@ -124,7 +125,7 @@ export class BeerList {
             this.page = 1;
             this.inputValue = searchItem;
             this.inputElement.value = searchItem;
-        })
+        });
         this.addSearchButtonListeners(newItem);
         searchList.appendChild(newItem);
     }
@@ -141,6 +142,7 @@ export class BeerList {
         if (!this.allBeers.length) {
             this.addError(this.beerList);
         } else {
+            this.recentSearches = this.recentSearches.filter( item => item !== this.inputValue);
             this.recentSearches = [this.inputValue, ...this.recentSearches];
             localStorage.setItem('recentSearches', JSON.stringify(this.recentSearches));
             this.removeRecentSearchesBlock();
@@ -284,14 +286,14 @@ export class BeerList {
         scrollButton.classList.add('beerList__scrollButton');
         scrollButton.addEventListener('click', () => {
             this.scrollToFirstCard();
-        })
+        });
         this.beerList.appendChild(scrollButton);
     }
 
     noMoreItemsMessege () {
         const warningMessege = document.createElement('div');
 
-        warningMessege.classList.add('beerList__warning')
+        warningMessege.classList.add('beerList__warning');
         warningMessege.innerText = 'There were no properties found for the given beer.';
         this.beerList.appendChild(warningMessege);
     }
