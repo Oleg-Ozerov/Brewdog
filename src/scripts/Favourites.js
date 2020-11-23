@@ -77,7 +77,6 @@ export class Favourites {
         })
 
         window.addEventListener('keyup', ({ code }) => {
-            console.log(code)
             if (code === ESCAPE_KEY) {
                 this.removeFavModal();
             }
