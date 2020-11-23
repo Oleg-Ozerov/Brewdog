@@ -1,0 +1,258 @@
+.header {
+  background-color: blueviolet;
+  display: flex;
+  height: 100px;
+  justify-content: space-around;
+}
+.header__title {
+  font-style: italic;
+  color: white;
+  font-size: 80px;
+}
+.header__button {
+  height: 50px;
+  width: 100px;
+  color: white;
+  font-size: 15px;
+  font-style: italic;
+  background-color: blueviolet;
+  border: 1px solid white;
+  box-shadow: 0 0 5px 2px white;
+  border-radius: 10px;
+  align-self: center;
+}
+.header__button:hover {
+  cursor: pointer;
+  background-color: white;
+  color: black;
+}
+
+.html,
+.body,
+.main,
+header,
+nav,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.searchBar {
+  padding-top: 30px;
+  display: flex;
+}
+.searchBar__input {
+  width: 500px;
+  height: 40px;
+  padding-left: 10px;
+  font-size: 20px;
+  border: 1px solid grey;
+  border-radius: 10px;
+  outline: none;
+}
+.searchBar__input::placeholder {
+  font-style: italic;
+}
+.searchBar__input:focus {
+  box-shadow: 0 0 10px 2px blueviolet;
+}
+.searchBar__button {
+  margin-left: 5px;
+  background-color: blueviolet;
+  background-image: url("../images/search-3-32.ico");
+  color: white;
+  background-size: contain;
+  background-position: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 10px;
+  border: 5px solid blueviolet;
+  outline: none;
+}
+.searchBar__button:hover {
+  cursor: pointer;
+  box-shadow: 0 0 10px 2px blueviolet;
+  outline: none;
+}
+
+.recentSearches {
+  margin-top: 20px;
+}
+.recentSearches__list {
+  padding-left: 10px;
+  margin-top: 10px;
+  border: 1px solid grey;
+  border-radius: 10px;
+  width: 560px;
+}
+.recentSearches__list-item {
+  line-height: 30px;
+  cursor: pointer;
+}
+.recentSearches__list-item:hover {
+  color: blueviolet;
+}
+
+.beerList {
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+}
+.beerList__card {
+  background-color: white;
+  width: 560px;
+  height: 300px;
+  display: flex;
+  margin-top: 10px;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: space-around;
+}
+.beerList__card-photo {
+  height: 200px;
+}
+.beerList__card-content {
+  position: relative;
+  width: 60%;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.beerList__card-title {
+  font-weight: bold;
+  align-self: start;
+}
+.beerList__card-description {
+  padding-top: 10px;
+}
+.beerList__card-button {
+  width: 100px;
+  padding: 5px;
+  font-size: 20px;
+  bottom: -10px;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: blueviolet;
+  outline: 0;
+  color: white;
+  border: 1px solid blueviolet;
+}
+.beerList__card-button:hover {
+  color: black;
+  box-shadow: 0 0 10px 2px blueviolet;
+}
+.beerList__button {
+  cursor: pointer;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  height: 40px;
+  width: 100px;
+  align-self: center;
+  background-color: white;
+  border-radius: 10px;
+  outline: none;
+}
+.beerList__button:hover {
+  box-shadow: 0 0 10px 2px blueviolet;
+}
+.beerList__warning {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  width: 560px;
+  border: 1px solid grey;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 40px;
+}
+.beerList__scrollButton {
+  position: fixed;
+  left: 100px;
+  bottom: 50px;
+  width: 40px;
+  height: 40px;
+  background-color: blueviolet;
+  text-align: center;
+  line-height: 40px;
+  font-size: 30px;
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.beerList__scrollButton:hover {
+  box-shadow: 0 0 10px 2px blueviolet;
+}
+
+.favourites {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  margin: auto;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  z-index: 1000;
+}
+.favourites__header {
+  width: 570px;
+  color: white;
+  padding-top: 20px;
+  padding-left: 10px;
+  font-style: italic;
+}
+.favourites__list {
+  z-index: 9999;
+  margin-bottom: 10px;
+}
+
+.singleBeer {
+  background-color: white;
+  width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.singleBeer__photo {
+  height: 300px;
+  padding-top: 5px;
+}
+.singleBeer__description {
+  padding-top: 10px;
+}
+.singleBeer__button {
+  background-color: blueviolet;
+  color: white;
+}
+
+.body {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.wrongInput {
+  border: 2px solid red;
+}
+
+/*# sourceMappingURL=main.css.map */
