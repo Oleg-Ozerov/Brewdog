@@ -58,7 +58,6 @@ export class BeerList {
         })
 
         element.addEventListener('keyup', ({ code }) => {
-            console.log(code);
             if (code === ENTER_KEY) {
                 this.beerListCreator();
             }
