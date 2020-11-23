@@ -1,0 +1,10 @@
+export const INPUT_FILTER_REG = /^[a-zA-Zа-яА-Я0-9 ]+$/;
+export const WRONG_INPUT_VALUE = 'wrongInput';
+export const ENTER_KEY = 13;
+export const RECENT_SEARCHES = `recentSearches`;
+export const ESCAPE_KEY = 27;
+export const RED_COLOR = 'red';
+export const BLUEVIOLET_COLOR = 'blueviolet';
+export const REMOVE_BUTTON_VALUE = 'Remove';
+export const ADD_BUTTON_VALUE = 'Add';
+export const SCROLL_ID = 'forScroll'
